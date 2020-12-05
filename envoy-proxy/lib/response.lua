@@ -1,7 +1,8 @@
 M = {}
 
 function M.foobar()
-    return "bar"
+    return "This is the response"
 end
+
 
 return M

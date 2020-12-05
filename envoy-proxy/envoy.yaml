@@ -28,15 +28,18 @@ static_resources:
             typed_config:
               "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
               inline_code: |
-                local mylibrary = require("lib.mylibrary")
+                local responseLib = require("lib.response")
 
                 function envoy_on_request(request_handle)
-                  request_handle:headers():add("foo", mylibrary.foobar())
+                  --request_handle:headers():add("foo", responseLib.foobar())
                 end
                 function envoy_on_response(response_handle)
+                  if response_handle:headers():get(":status") == "503" then
+                    local content_length = response_handle:body():setBytes("This inline code specified in the envoy.yaml file will intercept a 503 returned by the webserver and replace the message content with this message.")
+                    response_handle:headers():replace("content-length", content_length)
+                    response_handle:headers():replace("content-type", "text/html")
+                  end
                   body_size = response_handle:body():length()
-                  print(body_size)
-                  print("================== THIS IS A MESSAGE MY DUDE ==============================================")
                   response_handle:headers():add("response-body-size", tostring(body_size))
                 end
           - name: envoy.filters.http.router

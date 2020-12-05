@@ -1,0 +1,17 @@
+{
+  "name": "web-server",
+  "version": "1.0.0",
+  "description": "JSON service for debugging a web setup",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Ryan Yang",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  }
+}
